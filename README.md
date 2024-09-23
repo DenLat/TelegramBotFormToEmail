@@ -7,7 +7,7 @@ This project is a Telegram bot that collects form submissions and sends them to 
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/DenLat/TelegramBotFormToEmail
-   cd telegram_bot_project
+   cd TelegramBotFormToEmail
    ```
 
 2. **Create a virtual environment and activate it:**
