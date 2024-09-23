@@ -6,7 +6,7 @@ This project is a Telegram bot that collects form submissions and sends them to 
 
 1. **Clone the repository:**
    ```bash
-   git clone <repository_url>
+   git clone https://github.com/DenLat/TelegramBotFormToEmail
    cd telegram_bot_project
    ```
 
