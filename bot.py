@@ -2,22 +2,26 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, CallbackContext, MessageHandler, filters
 from config import BOT_TOKEN, EMAIL_USER, EMAIL_PASSWORD, EMAIL_RECEIVER
+import queue
 
-def start(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text('Привет! Пожалуйста, отправьте вашу заявку.')
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text('Hello! Send me a message and i will send it to the email')
 
-def handle_message(update: Update, context: CallbackContext) -> None:
+async def handle_message(update: Update, context: CallbackContext) -> None:  
     user_message = update.message.text
-    send_email(user_message)
-    update.message.reply_text('Ваша заявка отправлена!')
+    try:
+        send_email(user_message)
+        await context.bot.send_message(chat_id=update.effective_chat.id, text='Your message has been sent!')  
+    except Exception as e:
+        await context.bot.send_message(chat_id=update.effective_chat.id, text='Error sending message: {}'.format(e)) 
 
 def send_email(message: str) -> None:
     msg = MIMEMultipart()
     msg['From'] = EMAIL_USER
     msg['To'] = EMAIL_RECEIVER
-    msg['Subject'] = 'Новая заявка'
+    msg['Subject'] = ' New message'
     msg.attach(MIMEText(message, 'plain'))
 
     with smtplib.SMTP('smtp.gmail.com', 587) as server:
@@ -25,15 +29,12 @@ def send_email(message: str) -> None:
         server.login(EMAIL_USER, EMAIL_PASSWORD)
         server.send_message(msg)
 
-def main() -> None:
-    updater = Updater(BOT_TOKEN)
-    dispatcher = updater.dispatcher
+def main():
+    application = ApplicationBuilder().token(BOT_TOKEN).build()
 
-    dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, handle_message))
-
-    updater.start_polling()
-    updater.idle()
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+    application.run_polling()
 
 if __name__ == '__main__':
     main()
