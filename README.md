@@ -23,7 +23,7 @@ This project is a Telegram bot that collects form submissions and sends them to 
    ```
 
 4. **Configure the bot:**
-   - Rename `config_example.py` to `config.py` and fill in your details.
+   - Fill in `config.py` with your details.
 
 5. **Run the bot:**
    ```bash
@@ -34,10 +34,10 @@ This project is a Telegram bot that collects form submissions and sends them to 
 
 The `config.py` file should contain the following information:
 
-BOT_TOKEN = 'your_bot_token'
-EMAIL_USER = 'your_email@gmail.com'
-EMAIL_PASSWORD = 'your_password'
-EMAIL_RECEIVER = 'receiver_email@gmail.com'
+- BOT_TOKEN = 'your_bot_token'
+- EMAIL_USER = 'your_email@gmail.com'
+- EMAIL_PASSWORD = 'your_password'
+- EMAIL_RECEIVER = 'receiver_email@gmail.com'
 
 ## Usage
 
